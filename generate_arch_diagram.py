@@ -97,3 +97,4 @@ def generate_architecture_diagram():
 
 if __name__ == "__main__":
     generate_architecture_diagram()
+

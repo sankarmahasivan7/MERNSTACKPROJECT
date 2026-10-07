@@ -1,3 +1,6 @@
+
+
+
 import os
 from pptx import Presentation
 from pptx.util import Inches, Pt
@@ -74,66 +77,119 @@ def create_presentation():
     ]
 
     # ==========================================================
-    # SLIDE 1: TITLE SLIDE (Dark Luxury Theme)
+    # SLIDE 1: TITLE SLIDE (Project Name, Team & Guide)
     # ==========================================================
     s1 = prs.slides.add_slide(blank_layout)
     set_slide_background(s1, NAVY_DARK)
 
-    bar = s1.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.8), Inches(1.2), Inches(1.2), Inches(0.08))
-    bar.fill.solid()
-    bar.fill.fore_color.rgb = CYAN
-    bar.line.fill.background()
+    # Accent Top Pill
+    tag_box = s1.shapes.add_textbox(Inches(0.8), Inches(0.4), Inches(11.7), Inches(0.35))
+    tf_tag = tag_box.text_frame
+    p_tag = tf_tag.paragraphs[0]
+    p_tag.text = "MAJOR PROJECT PRESENTATION  |  DEPARTMENT OF INFORMATION TECHNOLOGY"
+    p_tag.font.size = Pt(11)
+    p_tag.font.bold = True
+    p_tag.font.color.rgb = CYAN
 
-    tbox = s1.shapes.add_textbox(Inches(0.8), Inches(1.5), Inches(11.7), Inches(2.8))
+    # Project Title
+    tbox = s1.shapes.add_textbox(Inches(0.8), Inches(0.75), Inches(11.7), Inches(1.8))
     tf1 = tbox.text_frame
     tf1.word_wrap = True
     
     p = tf1.paragraphs[0]
-    p.text = "PERSONAL EXPENSE MANAGEMENT SYSTEM"
-    p.font.size = Pt(36)
+    p.text = "PERSONAL EXPENSE MANAGEMENT SYSTEM AND METHOD"
+    p.font.size = Pt(28)
     p.font.bold = True
     p.font.color.rgb = WHITE
 
     p2 = tf1.add_paragraph()
     p2.text = "With Automated Categorization, Recurring Expense Detection & Predictive Budget Forecasting"
-    p2.font.size = Pt(20)
+    p2.font.size = Pt(16)
     p2.font.bold = True
     p2.font.color.rgb = CYAN
-    p2.space_before = Pt(14)
+    p2.space_before = Pt(6)
 
-    features = [
-        ("✦ Automated Categorization", "Rule & Pattern Matching"),
-        ("✦ Recurring Detection", "Subscription & Cycle Tracking"),
-        ("✦ Predictive Budgeting", "Trend-Based Forecasting"),
-        ("✦ MERN Architecture", "MongoDB • Express • React • Node")
+    # Split Cards: Team Members (Left) and Project Guide (Right)
+    card_w = Inches(5.7)
+    card_h = Inches(3.7)
+
+    # Card 1: Team Members (3 members including user)
+    add_card(s1, Inches(0.8), Inches(2.7), card_w, card_h, bg_color=NAVY_CARD, border_color=INDIGO)
+    tb_team = s1.shapes.add_textbox(Inches(1.05), Inches(2.85), card_w - Inches(0.5), card_h - Inches(0.3))
+    tf_team = tb_team.text_frame
+    tf_team.word_wrap = True
+
+    p_th = tf_team.paragraphs[0]
+    p_th.text = "👥  PRESENTED BY (TEAM MEMBERS):"
+    p_th.font.size = Pt(14)
+    p_th.font.bold = True
+    p_th.font.color.rgb = CYAN
+
+    team_members = [
+        ("1. SANGARA MAHASIVAN S", "Reg. No: 950721205000  (Team Lead)"),
+        ("2. [TEAM MEMBER 2 NAME]", "Reg. No: [Register Number]"),
+        ("3. [TEAM MEMBER 3 NAME]", "Reg. No: [Register Number]")
     ]
-    card_w = Inches(2.7)
-    card_h = Inches(1.3)
-    start_x = Inches(0.8)
-    gap = Inches(0.3)
-    for i, (f_title, f_sub) in enumerate(features):
-        cx = start_x + i * (card_w + gap)
-        add_card(s1, cx, Inches(4.5), card_w, card_h, bg_color=NAVY_CARD, border_color=INDIGO)
-        tb = s1.shapes.add_textbox(cx + Inches(0.15), Inches(4.6), card_w - Inches(0.3), card_h - Inches(0.2))
-        tframe = tb.text_frame
-        tframe.word_wrap = True
-        p_ft = tframe.paragraphs[0]
-        p_ft.text = f_title
-        p_ft.font.size = Pt(13)
-        p_ft.font.bold = True
-        p_ft.font.color.rgb = WHITE
-        
-        p_fs = tframe.add_paragraph()
-        p_fs.text = f_sub
-        p_fs.font.size = Pt(11)
-        p_fs.font.color.rgb = MUTED_TEXT
-        p_fs.space_before = Pt(4)
 
-    foot_box = s1.shapes.add_textbox(Inches(0.8), Inches(6.3), Inches(11.7), Inches(0.6))
+    for m_name, m_reg in team_members:
+        p_m = tf_team.add_paragraph()
+        p_m.text = m_name
+        p_m.font.size = Pt(13)
+        p_m.font.bold = True
+        p_m.font.color.rgb = WHITE
+        p_m.space_before = Pt(8)
+
+        p_r = tf_team.add_paragraph()
+        p_r.text = f"    {m_reg}"
+        p_r.font.size = Pt(11)
+        p_r.font.color.rgb = MUTED_TEXT
+        p_r.space_before = Pt(1)
+
+    # Card 2: Project Guide & Institution Details
+    add_card(s1, Inches(6.8), Inches(2.7), card_w, card_h, bg_color=NAVY_CARD, border_color=INDIGO)
+    tb_guide = s1.shapes.add_textbox(Inches(7.05), Inches(2.85), card_w - Inches(0.5), card_h - Inches(0.3))
+    tf_guide = tb_guide.text_frame
+    tf_guide.word_wrap = True
+
+    p_gh = tf_guide.paragraphs[0]
+    p_gh.text = "🎓  UNDER THE GUIDANCE OF:"
+    p_gh.font.size = Pt(14)
+    p_gh.font.bold = True
+    p_gh.font.color.rgb = CYAN
+
+    p_gn = tf_guide.add_paragraph()
+    p_gn.text = "[PROJECT GUIDE NAME, M.E., Ph.D.]"
+    p_gn.font.size = Pt(13)
+    p_gn.font.bold = True
+    p_gn.font.color.rgb = WHITE
+    p_gn.space_before = Pt(8)
+
+    p_gd = tf_guide.add_paragraph()
+    p_gd.text = "Assistant Professor / Associate Professor\nDepartment of Information Technology"
+    p_gd.font.size = Pt(11)
+    p_gd.font.color.rgb = MUTED_TEXT
+    p_gd.space_before = Pt(2)
+
+    p_ih = tf_guide.add_paragraph()
+    p_ih.text = "🏛  INSTITUTION:"
+    p_ih.font.size = Pt(13)
+    p_ih.font.bold = True
+    p_ih.font.color.rgb = CYAN
+    p_ih.space_before = Pt(14)
+
+    p_in = tf_guide.add_paragraph()
+    p_in.text = "Francis Xavier Engineering College\n(Autonomous Institution, Tirunelveli)"
+    p_in.font.size = Pt(11.5)
+    p_in.font.color.rgb = WHITE
+    p_in.space_before = Pt(2)
+
+    # Footer note
+    foot_box = s1.shapes.add_textbox(Inches(0.8), Inches(6.6), Inches(11.7), Inches(0.4))
     p_foot = foot_box.text_frame.paragraphs[0]
-    p_foot.text = "Project Presentation  |  Department of Information Technology  |  MERN Stack Engineering"
-    p_foot.font.size = Pt(12)
+    p_foot.text = "Department of Information Technology  •  Francis Xavier Engineering College  •  MERN Stack Engineering"
+    p_foot.font.size = Pt(11)
     p_foot.font.color.rgb = MUTED_TEXT
+    p_foot.alignment = PP_ALIGN.CENTER
 
     # ==========================================================
     # SLIDE 2: PROBLEM STATEMENT
@@ -596,17 +652,21 @@ def create_presentation():
     p4.alignment = PP_ALIGN.CENTER
     p4.space_before = Pt(28)
 
-    # Save output
-    output_updated = "Personal_Expense_Management_System_Presentation_Updated.pptx"
-    prs.save(output_updated)
-    print(f"Presentation successfully updated: {output_updated}")
-
-    # Also attempt to update the original file if not locked
-    try:
-        prs.save("Personal_Expense_Management_System_Presentation.pptx")
-        print("Also updated Personal_Expense_Management_System_Presentation.pptx")
-    except Exception:
-        print("Note: Original PPT is currently open in PowerPoint. Saved as updated version!")
+    # Save output with fallbacks if files are open in PowerPoint
+    filenames = [
+        "Personal_Expense_Management_System_Final.pptx",
+        "Personal_Expense_Management_System_Presentation_Updated.pptx",
+        "Personal_Expense_Management_System_Presentation.pptx"
+    ]
+    saved = []
+    for fn in filenames:
+        try:
+            prs.save(fn)
+            saved.append(fn)
+        except Exception as e:
+            pass
+    
+    print(f"Presentation successfully saved to: {', '.join(saved)}")
 
 if __name__ == "__main__":
     create_presentation()
