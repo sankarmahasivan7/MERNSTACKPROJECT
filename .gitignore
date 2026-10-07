@@ -25,5 +25,8 @@ lerna-debug.log*
 # Editor and OS
 .DS_Store
 Thumbs.db
+~$*.pptx
+~$*.docx
+~$*.xlsx
 .vscode/
 .idea/
